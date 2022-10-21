@@ -79,7 +79,6 @@ let newPro = new Product("01", "nike01", 'somethin', 0, "nike", ['s', 'm'], "s",
     ["1", "Ted", new Date(), "nice", { servise: "5" }], ["img1"]);
 console.log(newPro.getPrise())
 console.log(newPro.setPrise(5))
-console.log(newPro.setPrise(2))
 console.log(newPro.getPrise())
 
 
