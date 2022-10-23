@@ -32,19 +32,25 @@ function Product(ID, name, description, price, brand, sizes,
         return this.ID
     }
     this.setID = function (newID) {
-        return this.ID = newID
+        if (typeof (newID) == "string")
+            return this.ID = newID
+        else throw new Error("please, check enter");
     }
     this.getName = function () {
         return this.name;
     }
     this.setName = function (newName) {
-        return this.name = newName;
+        if (typeof (newName) == "string")
+            return this.name = newName;
+        else throw new Error("please, check enter");
     }
     this.getDescription = function () {
         return this.description;
     }
     this.setDescription = function (newDescription) {
-        return this.description = newDescription;
+        if (typeof (newDescription) == "string")
+            return this.description = newDescription;
+        else throw new Error("please, check enter");
     }
     this.getPrise = function () {
         return this.price;
@@ -59,7 +65,9 @@ function Product(ID, name, description, price, brand, sizes,
         return this.brand;
     }
     this.setBrand = function (newBrand) {
-        return this.brand = newBrand;
+        if (typeof (newBrand) == "string")
+            return this.brand = newBrand;
+        else throw new Error("please, check enter");
     }
     this.getSizes = function () {
         return this.sizes
@@ -77,7 +85,9 @@ function Product(ID, name, description, price, brand, sizes,
         return this.quantity;
     }
     this.setQuantity = function (newQuantity) {
-        return this.quantity = newQuantity;
+        if (typeof (newQuantity) == "number")
+            return this.quantity = newQuantity;
+        else throw new Error("please, check enter");
     }
     this.getDate = function () {
         return this.date
@@ -141,11 +151,11 @@ function Product(ID, name, description, price, brand, sizes,
 }
 
 
-let p1 = new Product("01", "nike01", "футболка для занять спортом",30, "nike", ['s', 'm'], "s", 10, new Date(), ["img1", "img2"]);
+let p1 = new Product("01", "nike01", "футболка для занять спортом", 30, "nike", ['s', 'm'], "s", 10, new Date(), ["img1", "img2"]);
 let P2 = new Product("02", "adidas", "футбольні кросівки", 20, "nike", ['39', '40'], "40", 10, new Date(), ["img1", "img2"]);
 let products = [p1, P2]
 console.log(searchProducts(products, "футб"))
-console.log(sortProducts(products,"-name"))
+console.log(sortProducts(products, "-name"))
 function searchProducts(products, search) {
     let results = [];
     for (const product of products) {
@@ -153,39 +163,39 @@ function searchProducts(products, search) {
     }
     return results
 }
-function sortProducts(products, sortAttribute){
+function sortProducts(products, sortAttribute) {
     let results = [];
-    switch (sortAttribute){
-        case"price": {
+    switch (sortAttribute) {
+        case "price": {
             for (const product of products) {
                 results.push(product.getPrise())
             }
             return results.sort()
         }
-        case"-price": {
+        case "-price": {
             for (const product of products) {
                 results.push(product.getPrise())
             }
             return results.sort().reverse()
         }
-        case"ID": {
+        case "ID": {
             for (const product of products) {
                 results.push(product.getID())
             }
             return results.sort()
         }
-        case"-ID": {
+        case "-ID": {
             for (const product of products) {
                 results.push(product.getID())
             }
             return results.sort().reverse()
         }
-        case"name": {
+        case "name": {
             for (const product of products) {
                 results.push(product.getName())
             }
             return results.sort()
-        }case"-name": {
+        } case "-name": {
             for (const product of products) {
                 results.push(product.getName())
             }
