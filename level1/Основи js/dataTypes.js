@@ -1,30 +1,14 @@
 function Product(ID, name, description, price, brand, sizes,
     activeSize, quantity, date, images) {
     let reviews = [];
-    if (typeof (ID) == "string")
-        this.ID = ID;
-    else throw new Error("please, check enter");
-    if (typeof (name) == "string")
-        this.name = name;
-    else throw new Error("please, check enter");
-    if (typeof (description) == "string")
-        this.description = description;
-    else throw new Error("please, check enter");
-    if (typeof (price) == "number")
-        this.price = price;
-    else throw new Error("please, check enter");
-    if (typeof (brand) == "string")
-        this.brand = brand;
-    else throw new Error("please, check enter");
-    if (typeof (sizes[0]) == "string")
-        this.sizes = sizes;
-    else throw new Error("please, check enter");
-    if (typeof (activeSize) == "string")
-        this.activeSize = activeSize;
-    else throw new Error("please, check enter");
-    if (typeof (quantity) == "number")
-        this.quantity = quantity
-    else throw new Error("please, check enter");
+    this.ID = ID;
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.brand = brand;
+    this.sizes = sizes;
+    this.activeSize = activeSize;
+    this.quantity = quantity
     this.date = date;
     this.images = images;
 
@@ -150,56 +134,24 @@ function Product(ID, name, description, price, brand, sizes,
 
 }
 
-
-let p1 = new Product("01", "nike01", "футболка для занять спортом", 30, "nike", ['s', 'm'], "s", 10, new Date(), ["img1", "img2"]);
-let P2 = new Product("02", "adidas", "футбольні кросівки", 20, "nike", ['39', '40'], "40", 10, new Date(), ["img1", "img2"]);
-let products = [p1, P2]
-console.log(searchProducts(products, "футб"))
-console.log(sortProducts(products, "-name"))
 function searchProducts(products, search) {
     let results = [];
     for (const product of products) {
         if (product.getDescription().indexOf(search) != -1) results.push(product)
+        else if (product.getName().indexOf(search) != -1) results.push(product)
     }
     return results
 }
 function sortProducts(products, sortAttribute) {
-    let results = [];
     switch (sortAttribute) {
         case "price": {
-            for (const product of products) {
-                results.push(product.getPrise())
-            }
-            return results.sort()
-        }
-        case "-price": {
-            for (const product of products) {
-                results.push(product.getPrise())
-            }
-            return results.sort().reverse()
+            return products.sort((a, b) => a.getPrise() > b.getPrise() ? 1 : -1)
         }
         case "ID": {
-            for (const product of products) {
-                results.push(product.getID())
-            }
-            return results.sort()
-        }
-        case "-ID": {
-            for (const product of products) {
-                results.push(product.getID())
-            }
-            return results.sort().reverse()
+            return products.sort((a, b) => a.getID() > b.getID() ? 1 : -1)
         }
         case "name": {
-            for (const product of products) {
-                results.push(product.getName())
-            }
-            return results.sort()
-        } case "-name": {
-            for (const product of products) {
-                results.push(product.getName())
-            }
-            return results.sort().reverse()
+            return products.sort((a, b) => a.getName() > b.getName() ? 1 : -1)
         }
     }
 }
