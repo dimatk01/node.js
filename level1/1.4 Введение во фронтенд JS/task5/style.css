@@ -1,0 +1,9 @@
+#sq
+{  margin: 10px 0 10px 20px;
+    width: 100px;
+	height: 100px;
+	background: yellow;
+}
+.hidden{
+display: none;
+}

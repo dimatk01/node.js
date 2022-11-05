@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="sq"></div>
+   <button id="but">button</button>
+   <script>
+    const button = document.getElementById("but")
+    button.addEventListener("mouseout",()=> document.getElementById("sq").style.display = 'none')
+    button.addEventListener("mouseover",()=> document.getElementById("sq").style.display = 'block')
+   </script>
+ 
+</body>
+
+</html>

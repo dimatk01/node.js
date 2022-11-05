@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="sq"></div>
+    <textarea name="textarea" id="input-id" rows="10" cols="50"></textarea>
+    <button id="but">go</button>
+    <script>
+        document.getElementById("but").onclick = function () {
+            const items = (document.getElementById("input-id").value.split("\n"))
+            items.map(i => {
+                const el = document.createElement("img")
+                el.setAttribute("src", i)
+                document.body.appendChild(el);
+            })
+        }
+    </script>
+
+</body>
+
+</html>

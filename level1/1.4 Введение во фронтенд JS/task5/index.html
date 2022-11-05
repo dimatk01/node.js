@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+    <div id="sq"></div>
+    <script>
+       document.getElementById('sq').onclick = function() {
+        alert('привет')
+        this.onclick = function() {
+            this.remove()
+        }
+    }
+      </script>
+ 
+</body>
+
+</html>

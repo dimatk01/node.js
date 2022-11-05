@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="sq"></div>
+   <input type="text" id="input">
+   <script>
+    const button = document.getElementById("input")
+    button.addEventListener("keydown",()=> document.getElementById("sq").style.display = 'none')
+    button.addEventListener("focus",()=> document.getElementById("sq").style.display = 'block')
+   </script>
+ 
+</body>
+
+</html>

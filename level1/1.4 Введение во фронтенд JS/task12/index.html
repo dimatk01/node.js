@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="sq"></div>
+<script>
+    function success(position) {
+    const latitude  = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    document.getElementById("sq").innerHTML=`Ш: ${latitude}, Д: ${longitude}`
+  }
+
+  function error() {
+    status.textContent = 'Невозможно получить ваше местоположение';
+  }
+    navigator.geolocation.getCurrentPosition(success, error);
+    
+
+</script>
+</body>
+
+</html>

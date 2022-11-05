@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="someClass"></div>
+    <div class="someClass"></div>
+    <div class="someClass"></div>
+    <div class="someClass"></div>
+    <div class="someClass"></div>
+    <button id="css" onclick="document.getElementById('sq').style.display = 'none'">CSS</button>
+    <input type="text" id="input-id">
+    <button id="input">go</button>
+    <script>   document.getElementById('input').onclick = function () {
+            const items = document.querySelectorAll(document.getElementById("input-id").value)
+            if (items[0] != undefined) {
+                if (items[0].getAttribute("style") != "display: none;") {
+                    for (let i = 0; i < items.length; i++) {
+                        items[i].style.display = 'none'
+                    }
+                }
+                else {
+                    for (let i = 0; i < items.length; i++) {
+                        items[i].style.display = 'block'
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

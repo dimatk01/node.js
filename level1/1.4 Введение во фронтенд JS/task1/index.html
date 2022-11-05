@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="sq"></div>
+    <button id="css" onclick="document.getElementById('sq').style.display = 'none'">CSS</button>
+    <button id="js">JS</button>
+    <button id="js+css">JS+CSS</button>
+    <script>   document.getElementById('js').onclick = function () { (document.getElementById("sq")).remove() }
+    </script>
+    <script>document.getElementById('js+css').onclick = function () {
+            (document.getElementById("sq")).setAttribute("class", "hidden")
+        }</script>
+
+</body>
+
+</html>
