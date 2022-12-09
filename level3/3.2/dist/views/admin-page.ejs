@@ -1,0 +1,159 @@
+<%- include('./head'); %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+<div class="col-xs-5 col-sm-2 col-md-2 col-lg-2">
+  <div class="logo"><a href="http://localhost:3000/" class="navbar-brand"><span class="sh">Ш</span><span class="plus">++</span></a></div>
+</div>
+<div class="social">
+  <a href="https://www.facebook.com/shpp.kr/" target="_blank"><span class="fa-stack fa-sm"><i class="fa fa-facebook fa-stack-1x"></i></span></a>
+  <a href="http://programming.kr.ua/ru/courses#faq" target="_blank"><span class="fa-stack fa-sm"><i class="fa fa-book fa-stack-1x"></i></span></a>
+  <a href="/" onclick=" logOut()" target="_self"><span class="fa-stack fa-sm"><i class="fa fa-sign-in fa-stack-1x"></i></span></a>
+</div>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <table class="table table-bordered ">
+          <div class="col-sm-12"> <thead>
+           <tr>
+             <th scope="col">#</th>
+             <th scope="col">Назва книги</th>
+             <th scope="col">Автори</th>
+             <th scope="col">Дії</th>
+             <th scope="col">Хочуть</th>
+             <th scope="col">Кількість перглядів</th>
+           </tr>
+         </thead></div>
+          
+           <tbody>
+            <% if (items) { %>
+              <% items.forEach(function(item){ %>
+             <tr>
+               <th scope="row"><%- item.book_id %></th>
+               <td> <%- item.book_name %></td>
+               <td> <%- item.book_authors %></td>
+               <td><a href= <%- "http://localhost:3000/admin/api/v1/deleteBook/?id=" + item.book_id %>>Delete</a></td>
+               <td> <%- item.book_views %></td>
+               <td> <%- item.book_wants %></td>
+             </tr>
+             <% }); %>
+             <% } %>
+           </tbody>
+         </table>
+         <nav aria-label="...">
+          <ul class="pagination">
+            <% if (items.length<5 && page ===1 ) { %>
+              <li class="page-item disabled ">
+                <a class="page-link"  %>>Назад</a>
+                <li class="page-item active"><a class="page-link" > <%- page  %></a></li>
+              </li>
+              <li class="page-item disabled" aria-current="page">
+                <a class="page-link"> <%- page+1  %></a>
+              </li>
+              <li class="page-item disabled"><a class="page-link" > <%- page+2  %></a></li>
+              <li class="page-itemd disabled">
+                <a class="page-link" >Далі</a>
+              </li>
+            <%} else if (items.length<5  ) { %>
+              <li class="page-item ">
+                <a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${(page-2)*5}&count=${5}` %>>Назад</a>
+                <li class="page-item active"><a class="page-link" > <%- page  %></a></li>
+              </li>
+              <li class="page-item disabled" aria-current="page">
+                <a class="page-link"> <%- page+1  %></a>
+              </li>
+              <li class="page-item disabled"><a class="page-link" > <%- page+2  %></a></li>
+              <li class="page-itemd disabled">
+                <a class="page-link" >Далі</a>
+              </li>
+            <% }  else if(page===1){ %>
+              <li class="page-item disabled">
+                <a class="page-link"  %>>Назад</a>
+                <li class="page-item active"><a class="page-link"  > <%- page  %></a></li>
+              </li>
+              <li class="page-item " aria-current="page">
+                <a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${page*5}&count=${5}` %>> <%- page+1  %></a>
+              </li>
+              <li class="page-item "><a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${(page+1)*5}&count=${5}` %>> <%- page+2  %></a></li>
+              <li class="page-itemd ">
+                <a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${page*5}&count=${5}` %>>Далі</a>
+              </li>
+              <% }  else { %>
+                <li class="page-item ">
+                  <a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${(page-2)*5}&count=${5}` %> %>>Назад</a>
+                  <li class="page-item active"><a class="page-link"  > <%- page  %></a></li>
+                </li>
+                <li class="page-item " aria-current="page">
+                  <a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${page*5}&count=${5}` %>> <%- page+1  %></a>
+                </li>
+                <li class="page-item "><a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${(page+1)*5}&count=${5}` %>> <%- page+2  %></a></li>
+                <li class="page-itemd ">
+                  <a class="page-link" href= <%= "http://localhost:3000/admin/api/v1/admin/?" + `offset=${page*5}&count=${5}` %>>Далі</a>
+                </li>
+              <% }   %>
+          </ul>
+        </nav>        
+      </div>
+        <div class="col">
+          <form action="/admin/api/v1/addBook"
+            id='uploadForm' 
+            encType="multipart/form-data"
+            method="post">
+        <div class="container">
+          <div class="input-group mb-3">
+            <input type="text" class="rounded float-start" placeholder="Назва книги"name='book_name' required >
+            <input type="text" class="rounded float-start" placeholder="Автори" name="book_authors" required >
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="rounded float-start" placeholder="Рік видання" name="book_year" required >
+            <input type="text" class="rounded float-start" placeholder="Кількість сторінок" name="count_pages" >
+          </div>
+          <div class="input-group mb-3">
+            <input type="file" name="book_img" />
+          </div>
+          <div class="input-group mb-3">
+            <textarea class="form-control" placeholder="Короткий опис" name="book_description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">Додати нову книгу</button>
+          <button type="reset" class="btn btn-">Відміна</button>
+        </form>
+        </div>   
+      </div> 
+    </div>
+  </div>
+  <script>function preview(url) {
+    document.getElementById('previewImg').src = url;
+}</script>
+<script>
+
+function logOut() {
+        var httpRequest = false;
+
+        if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+            httpRequest = new XMLHttpRequest();
+            if (httpRequest.overrideMimeType) {
+                httpRequest.overrideMimeType('text/xml');
+                // Читайте ниже об этой строке
+            }
+        } else if (window.ActiveXObject) { // IE
+            try {
+                httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try {
+                    httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {}
+            }
+        }
+        if (!httpRequest) {
+            alert('Не вышло :( Невозможно создать экземпляр класса XMLHTTP ');
+            return false;
+        }  
+        httpRequest.open('GET', 'http://localhost:3000/admin/api/v1/admin/', true);
+        httpRequest.setRequestHeader("Authorization", "");
+        httpRequest.send();
+    }
+</script>
+  
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+</body>
+</html>
