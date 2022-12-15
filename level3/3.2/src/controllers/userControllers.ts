@@ -52,7 +52,6 @@ function getBooksByName(req: Request, res: Response) {
     const searchData: string = req.query.search?req.query.search:""
          DBModel.searchBookByName(searchData)
    .then((items: Book[]) => {
-    console.log(items);
      res.render(path.resolve(__dirname, "../views", 'results-page.ejs'), { items, searchData })
    })
    .catch((error: string) => {

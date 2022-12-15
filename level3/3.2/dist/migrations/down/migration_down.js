@@ -11,11 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require('mysql');
 const fs = require('fs');
+const path = require('path');
 const connect = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'library'
+    database: 'library',
+    multipleStatements: true
 });
 connect.query("SELECT * FROM `migrations`", function (error, results) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -24,7 +26,7 @@ connect.query("SELECT * FROM `migrations`", function (error, results) {
         if (results) {
             const item = results[results.length - 1];
             if (item.migration_isDo !== 0) {
-                const res = yield connect.query(fs.readFileSync('./' + item.migration_down, { encoding: 'utf8', flag: 'r' }), function (error, results) {
+                const res = yield connect.query(fs.readFileSync(path.join(__dirname, item.migration_down), { encoding: 'utf8', flag: 'r' }), function (error, results) {
                     if (error)
                         console.log(error);
                     return true;

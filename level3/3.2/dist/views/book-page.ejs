@@ -34,7 +34,12 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="bookLastInfo">
-                                <div class="bookRow"><span class="properties">автор:</span><span id="author"><%- item.book_authors %></span></div>
+                                <% if (item.authors_names) { %>
+                                    <div class="bookRow"><span class="properties">автори:</span><span id="author"><%- item.authors_names %></span></div>
+                                    <% }  else { %>
+                                        <div class="bookRow"><span class="properties">автор:</span><span id="author"></span></div>
+                                    <% }  %>
+
                                 <div class="bookRow"><span class="properties">год:</span><span id="year"><%- item.book_year %></span></div>
                                 <div class="bookRow"><span class="properties">страниц:</span><span id="pages"><%- item.count_pages %></span></div>
                                 <div class="bookRow"><span class="properties">isbn:</span><span id="isbn"></span></div>

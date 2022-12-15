@@ -1,10 +1,12 @@
 const mysql = require('mysql');
 const fs = require('fs')
+const path= require('path')
 const connect = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'library'
+    database: 'library',
+    multipleStatements:true
 });
 
 type Migration = { migration_id:number,migration_up: string, migration_isDo: number,migration_down:string }
@@ -13,7 +15,7 @@ connect.query("SELECT * FROM `migrations`", async function (error: string, resul
     if(results) {
         const item = results[results.length-1]
         if (item.migration_isDo!==0){
-        const res =await connect.query(fs.readFileSync('./'+item.migration_down,
+        const res =await connect.query(fs.readFileSync(path.join(__dirname,item.migration_down),
              { encoding: 'utf8', flag: 'r' }),
               function (error: string, results: Array<Migration>) {
                 if (error) console.log(error);

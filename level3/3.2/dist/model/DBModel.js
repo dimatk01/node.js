@@ -10,34 +10,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require('mysql');
+const sqlQuery = require('../types/sql');
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'library'
+    database: 'library',
+    multipleStatements: true
 });
-var sqlQuery;
-(function (sqlQuery) {
-    sqlQuery["addBook"] = "INSERT INTO books SET book_name= ?, book_authors= ?, book_description= ?, book_img= ?, book_year= ?, count_pages= ?";
-    sqlQuery["getBooks"] = "SELECT * FROM books WHERE book_isDelete is null LIMIT  ?, ?";
-    sqlQuery["getBook"] = "SELECT * FROM books WHERE book_isDelete is null AND book_id =?";
-    sqlQuery["addWantsCount"] = "UPDATE books SET book_views =?  WHERE book_id =?";
-    sqlQuery["deleteBook"] = "UPDATE books SET book_isDelete = ? WHERE book_id =?";
-    sqlQuery["updateWantsCount"] = "UPDATE books SET book_wants = ? WHERE book_id = ?";
-    sqlQuery["search"] = "SELECT * FROM books WHERE book_isDelete is null AND book_name LIKE ?";
-})(sqlQuery || (sqlQuery = {}));
 module.exports = {
     addAtDatabase: function (req) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const dataBook = req.body;
+            const data = req.body;
             const book_img = (_a = req.files) === null || _a === void 0 ? void 0 : _a.book_img.name;
-            return new Promise((resolve, reject) => {
-                pool.query(sqlQuery.addBook, [dataBook === null || dataBook === void 0 ? void 0 : dataBook.book_name, dataBook === null || dataBook === void 0 ? void 0 : dataBook.book_authors, dataBook === null || dataBook === void 0 ? void 0 : dataBook.book_description, book_img, dataBook === null || dataBook === void 0 ? void 0 : dataBook.book_year, dataBook === null || dataBook === void 0 ? void 0 : dataBook.count_pages], (error) => {
-                    error ? reject(error) : resolve(true);
-                });
-            });
+            const book_id = yield addBook(data, book_img);
+            const authors_id = yield addAuthors(data.book_authors.split(', '));
+            yield addIn_book_authors(book_id, authors_id);
         });
     },
     getFromDB: function (offset, count) {
@@ -62,7 +52,7 @@ module.exports = {
     deleteBook: function (id) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                pool.query(sqlQuery.deleteBook, [Date.now(), id], function (error, results) {
+                pool.query(sqlQuery.deleteBook, [Date.now(), id, Date.now(), id], function (error, results) {
                     results ? resolve(results) : reject(error);
                 });
             });
@@ -79,7 +69,6 @@ module.exports = {
         });
     }),
     searchBookByName: (searchData) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(searchData);
         return new Promise((resolve, reject) => {
             pool.query(sqlQuery.search, ["%" + searchData + "%"], function (error, results) {
                 results ? resolve(results) : reject(error);
@@ -95,5 +84,48 @@ function addViewsCount(id, book_views) {
                 error ? reject(error) : resolve(true);
             });
         });
+    });
+}
+function addBook(data, book_img) {
+    return new Promise((resolve, reject) => {
+        pool.query(sqlQuery.addBook, [data === null || data === void 0 ? void 0 : data.book_name, data === null || data === void 0 ? void 0 : data.book_description, book_img, data === null || data === void 0 ? void 0 : data.book_year, data === null || data === void 0 ? void 0 : data.count_pages], (error, results) => {
+            error ? reject(error) : resolve(results.insertId);
+        });
+    });
+}
+function addAuthors(book_authors) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield book_authors.map((item) => __awaiter(this, void 0, void 0, function* () {
+            const author = yield searchAuthor(item);
+            if (author)
+                return author;
+            return addAuthor(item);
+        }));
+    });
+}
+function searchAuthor(item) {
+    return new Promise((resolve, reject) => {
+        pool.query(sqlQuery.searchAuthor, ["%" + item + "%"], function (error, results) {
+            typeof results[0] !== 'undefined' ? resolve(results[0].author_id) : resolve('');
+        });
+    });
+}
+function addAuthor(item) {
+    return new Promise((resolve, reject) => {
+        pool.query(sqlQuery.addAuthor, [item], function (error, results) {
+            error ? reject(error) : resolve(results.insertId);
+        });
+    });
+}
+function addIn_book_authors(book_id, authors_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield authors_id.map((item) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                console.log(item);
+                pool.query(sqlQuery.addBook_author, [book_id, yield item], function (error, results) {
+                    console.log(error);
+                });
+            }));
+        }));
     });
 }
