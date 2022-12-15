@@ -18,10 +18,11 @@ const port = 3000;
 const backup = require('./cronFiles/backup.js');
 const softDelete = require('./cronFiles/softDelete.js');
 const router = require('./routers/router.js');
+const db = require('./model/DBModel.js');
 var cors = require('cors');
 const fileUpload = require('express-fileupload');
 const cron = require('node-cron');
-cron.schedule('00 00 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+cron.schedule('46 16 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
     backup.dump();
     softDelete();
 }));

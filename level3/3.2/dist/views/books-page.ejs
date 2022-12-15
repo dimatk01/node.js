@@ -12,7 +12,11 @@
                             <a href=<%- "http://localhost:3000/book/" +item.book_id %>><img src=<%- "http://localhost:3000/images/" +item.book_img %> alt=<%- item.book_name %>>
                                 <div data-title="СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА" class="blockI" style="height: 46px;">
                                     <div data-book-title=<%- item.book_name %> class="title size_text"> <%- item.book_name %></div>
-                                    <div data-book-author=<%- item.book_author %> class="author"><%- item.book_authors %></div>
+                                    <% if (item.authors_names) { %>
+                                    <div data-book-author=<%- item.book_author %> class="author"><%- item.authors_names %></div>
+                                    <% }  else { %>
+                                    <div data-book-author=<%- item.book_author %> class="author"></div>
+                                    <% }  %>
                                 </div>
                             </a>
                         </div>

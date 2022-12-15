@@ -11,11 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require('mysql');
 const fs = require('fs');
+const path = require('path');
 const connect = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'library'
+    database: 'library',
+    multipleStatements: true
 });
 connect.query("SELECT * FROM `migrations`", function (error, results) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -23,16 +25,19 @@ connect.query("SELECT * FROM `migrations`", function (error, results) {
             console.log(error);
         yield results.map((item) => __awaiter(this, void 0, void 0, function* () {
             if (item.migration_isDo !== 1) {
-                const res = yield connect.query(fs.readFileSync('./' + item.migration_up, { encoding: 'utf8', flag: 'r' }), function (error, results) {
-                    if (error)
+                const res = yield connect.query(fs.readFileSync(path.join(__dirname, item.migration_up), { encoding: 'utf8', flag: 'r' }), function (error, results) {
+                    if (error) {
                         console.log(error);
+                        return false;
+                    }
                     return true;
                 });
-                if (res)
+                if (res) {
                     yield connect.query(`UPDATE migrations SET migration_isDo = 1 WHERE ${item.migration_id}`, function (error, results) {
                         if (error)
                             console.log(error);
                     });
+                }
             }
         }));
         connect.end();

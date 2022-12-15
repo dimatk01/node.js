@@ -5,7 +5,9 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc",
     "start": "node ./dist/index.js",
-    "dev": "nodemon ./dist/index.js"
+    "dev": "nodemon ./dist/index.js",
+    "up":"node ./dist/migrations/up/migration_up.js",
+    "down":"node ./dist/migrations/down/migration_down.js"
   },
   "author": "",
   "license": "ISC",
